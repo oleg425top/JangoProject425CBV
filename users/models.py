@@ -8,7 +8,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name='email')
     phone = models.CharField(max_length=35, unique=True, verbose_name='phone_number', **NULLABLE)
-    telegram = models.CharField(max_length=150, unique=True, verbose_name='telegram', **NULLABLE)
+    telegram = models.CharField(max_length=150, unique=True, verbose_name='telegram_user_name', **NULLABLE)
     is_active = models.BooleanField(default=True, verbose_name='active')
 
 
