@@ -1,4 +1,8 @@
+from django.contrib.gis.db.models.functions import NumGeometries
 from django.db import models
+
+from users.models import NULLABLE
+
 
 class Breed(models.Model):
     name = models.CharField(max_length=100, verbose_name='bread')
@@ -11,3 +15,24 @@ class Breed(models.Model):
         verbose_name = 'bread'
         verbose_name_plural = 'breeds'
 
+
+class Dog(models.Model):
+    name = models.CharField(max_length=250, verbose_name='dog name')
+    breed = models.ForeignKey(Breed, on_delete=models.CASCADE, verbose_name='breed')
+    photo = models.ImageField(upload_to='dogs/', **NULLABLE, verbose_name='image')
+    birth_date = models.DateTimeField(**NULLABLE, verbose_name='berth date')
+
+    def __str__(self):
+        return f'{self.name} ({self.breed})'
+
+    class Meta:
+        verbose_name = 'dog'
+        verbose_name_plural = 'dogs'
+
+        # abstract = True
+        # app_label = 'dogs'
+        # ordering = [-1]
+        # proxy = True
+        # permissions = []
+        # db_table = 'doggies'
+        # get_latest_by = 'birth_date'
