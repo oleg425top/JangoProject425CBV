@@ -13,7 +13,6 @@ import os
 
 from pathlib import Path
 
-from django.conf.global_settings import MEDIA_ROOT, MEDIA_URL
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -134,15 +133,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (
-    BASE_DIR/ 'static',
+    BASE_DIR / 'static',
 )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = (
-    BASE_DIR / 'media'
+        BASE_DIR / 'media'
 )
-
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
