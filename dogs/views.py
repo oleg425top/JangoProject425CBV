@@ -56,3 +56,10 @@ def dog_create_view(request):
     }
     return render(request, 'dogs/create.html', context=context)
     # return render(request, 'dogs/create.html', {'form': DogForms})   пример без context
+
+def dog_detail_view(request, pk):
+    dog_object = Dog.objects.get(pk=pk)
+    context = {'object':dog_object,
+               'title': dog_object
+    }
+    return render(request, 'dogs/detail.html', context=context)
