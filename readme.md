@@ -1,1 +1,1 @@
-Остановился на 61 минуте
+https://youtube.com/watch?v=oCeffhtywco&si=cI_J124k55_rdJfh решение проблемы с GDAL!
