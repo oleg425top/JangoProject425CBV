@@ -4,13 +4,13 @@
 <form method="post" enctype="multipart/form-data" class="row">
     <div class="col-6">
         <div class="card-header">
-            Введите данные собаки!
+            Изменить собаку
         </div>
         <div class="card-body">
             {% csrf_token %}
             {{ form.as_p}}
             <button type="submit" class="btn btn-outline-success">
-                Добавить
+                Изменить
             </button>
 
         </div>
