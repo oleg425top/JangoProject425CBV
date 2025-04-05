@@ -2,3 +2,4 @@ mssql-django
 python-dotenv
 Django~=5.0.13
 pillow
+Django
