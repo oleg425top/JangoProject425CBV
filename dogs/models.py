@@ -1,4 +1,3 @@
-from django.contrib.gis.db.models.functions import NumGeometries
 from django.db import models
 
 from users.models import NULLABLE
