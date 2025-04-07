@@ -1,4 +1,4 @@
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -40,6 +40,7 @@ def user_login_view(request):
     }
     return render(request, 'users/user_login.html', context=context)
 
+@login_required
 
 def user_profile_view(request):
     user_object = request.user
@@ -58,7 +59,7 @@ def user_profile_view(request):
 #     pass
 
 
-# @login_required
+@login_required
 def user_logout_view(request):
     logout(request)
     return redirect('dogs:index')

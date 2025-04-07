@@ -1,9 +1,7 @@
-from lib2to3.fixes.fix_input import context
-
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 
 from dogs.models import Breed, Dog
 from dogs.forms import DogForms
@@ -45,7 +43,7 @@ def dogs_list_view(request):
 
 
 # Create Read Update Delete (CRUD)
-# @login_required
+@login_required
 def dog_create_view(request):
     if request.method == 'POST':
         form = DogForms(request.Post, request.FILES)
@@ -59,7 +57,8 @@ def dog_create_view(request):
     return render(request, 'dogs/create_update.html', context=context)
     # return render(request, 'dogs/create.html', {'form': DogForms})   пример без context
 
-# @login_required
+
+@login_required
 def dog_detail_view(request, pk):
     dog_object = Dog.objects.get(pk=pk)
     context = {'object': dog_object,
@@ -67,7 +66,8 @@ def dog_detail_view(request, pk):
                }
     return render(request, 'dogs/detail.html', context=context)
 
-# @login_required
+
+@login_required
 def dog_update_view(request, pk):
     dog_object = get_object_or_404(Dog, pk=pk)
     if request.method == 'POST':
@@ -77,12 +77,14 @@ def dog_update_view(request, pk):
             dog_object.save()
             return HttpResponseRedirect(reverse('dogs:dog_detail', args={pk: pk}))
     context = {
-        'object':dog_object,
+        'object': dog_object,
         'title': 'Изменить собаку',
-        'form':DogForms(instance=dog_object)
+        'form': DogForms(instance=dog_object)
     }
     return render(request, 'dogs/create_update.html', context=context)
-# @login_required
+
+
+@login_required
 def dog_delete_view(request, pk):
     dog_object = get_object_or_404(Dog, pk=pk)
     if request.method == 'POST':
