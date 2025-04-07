@@ -10,7 +10,7 @@ from dogs.forms import DogForms
 def index_view(request):
     context = {
         'objects_list': Breed.objects.all()[:3],
-        'title': 'Питомник - Главное'
+        'title': 'Питомник - Главная'
     }
 
     return render(request, 'dogs/index.html', context=context)
