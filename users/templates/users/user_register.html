@@ -1,6 +1,6 @@
 {% extends 'dogs/base.html' %}
 
-{% blockcontent %}
+{% block content %}
 <div class="row">
     <div class="col-3"></div>
     <div class="col-6">
@@ -10,10 +10,10 @@
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-success float-right" Регистрация></button>
+                    <button type="submit" class="btn btn-success float-right">Регистрация></button>
                 </form>
-
             </div>
+            <div class="card-footer"> </div>
         </div>
     </div>
 </div>

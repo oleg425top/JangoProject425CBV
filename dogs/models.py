@@ -25,8 +25,9 @@ class Dog(models.Model):
         return f'{self.name} ({self.breed})'
 
     class Meta:
-        verbose_name = 'собакевич'
-        verbose_name_plural = 'dogs'
+        verbose_name = 'собака'
+        verbose_name_plural = 'собаки'
+
 
         # abstract = True
         # app_label = 'dogs'
