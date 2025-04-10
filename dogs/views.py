@@ -46,7 +46,7 @@ def dogs_list_view(request):
 @login_required
 def dog_create_view(request):
     if request.method == 'POST':
-        form = DogForms(request.Post, request.FILES)
+        form = DogForms(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('dogs:dogs_list'))
