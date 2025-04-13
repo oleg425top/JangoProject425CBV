@@ -5,8 +5,14 @@
     <div class="col-6">
         <div class="card">
             <div class="card-header">
+                {% if object %}
+                Обновите данные собаки
+                {% else %}
                 Введите данные собаки!
             </div>
+            <img class="card-img-top"
+                 src="{{ object.photo|dogs_media }}" width="300" height="400"
+                 alt="Card image cap">
             <div class="card-body">
                 {% csrf_token %}
                 {{ form.as_p}}
