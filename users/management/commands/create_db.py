@@ -13,10 +13,13 @@ class Command(BaseCommand):
 
         try:
             conn = pyodbc.connect(ConnectionString)
-            conn.autocommit = True
-            # conn.execute(fr'DROP DATABASE {DATABASE}')
-            conn.execute(fr'CREATE DATABASE {DATABASE}')
         except pyodbc.ProgrammingError as ex:
             print(ex)
         else:
-            print(f'Database {DATABASE} was created successfully!!')
+            conn.autocommit = True
+            try:
+                conn.execute(fr'CREATE DATABASE {DATABASE}')
+            except pyodbc.ProgrammingError as ex:
+                print(ex)
+            else:
+                print(f'Database {DATABASE} was created successfully!!')
