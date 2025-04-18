@@ -21,7 +21,6 @@ class Dog(models.Model):
     breed = models.ForeignKey(Breed, on_delete=models.CASCADE, verbose_name='breed')
     photo = models.ImageField(upload_to='dogs/', **NULLABLE, verbose_name='image')
     birth_date = models.DateTimeField(**NULLABLE, verbose_name='birth date')
-
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='хозяин')
 
     def __str__(self):

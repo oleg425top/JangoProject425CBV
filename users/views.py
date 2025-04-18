@@ -13,8 +13,7 @@ from users.services import send_register_email, send_new_password
 
 def user_register_view(request):
     form = UserRegisterForm(request.POST)
-    if request.method == 'POST':
-
+    if request.method == "POST":
         if form.is_valid():
             new_user = form.save()
             new_user.set_password(form.cleaned_data['password'])
@@ -23,7 +22,7 @@ def user_register_view(request):
             return HttpResponseRedirect(reverse('users:user_login'))
     context = {
         'title': 'Создать аккаунт',
-        'form': form
+        'form': UserRegisterForm
     }
     return render(request, 'users/user_register.html/', context=context)
 

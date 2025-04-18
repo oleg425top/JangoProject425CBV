@@ -13,5 +13,5 @@ urlpatterns = [
     path('profile/', user_profile_view, name='user_profile'),
     path('update/', user_update_view, name='user_update'),
     path('change_password/', user_change_password_view, name='user_change_password'),
-    path('profile/genpassword', user_generate_new_password_view, name='user_generate_new_password'),
+    path('profile/genpassword/', user_generate_new_password_view, name='user_generate_new_password'),
 ]
