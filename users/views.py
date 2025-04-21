@@ -2,6 +2,7 @@ import random
 import string
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, reverse, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -10,7 +11,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView
 from django.views.generic import CreateView, UpdateView
 from users.models import User
-from users.forms import UserRegisterForm, UserLoginForm, UserUpdateForm, UserChangePasswordForm, UserForm
+from users.forms import UserRegisterForm, UserLoginForm, UserUpdateForm, UserChangePasswordForm, UserForm, \
+    StyleFormMixin
 from users.services import send_register_email, send_new_password
 
 
@@ -61,29 +63,22 @@ class UserUpdateView(UpdateView):
         return context_data
 
 
-@login_required(login_url='users:user_login')
-def user_change_password_view(request):
-    user_object = request.user
-    form = UserChangePasswordForm(user_object, request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            user_object = form.save()
-            update_session_auth_hash(request, user_object)
-            messages.success(request, 'Пароль был успешно изменен')
-            return HttpResponseRedirect(reverse('users:user_profile'))
-        else:
-            messages.error(request, 'не удалось изменить пароль')
-    context = {
-        'title': f'Изменить пароль {user_object.first_name} {user_object.last_name}',
-        'form': form
-    }
-    return render(request, 'users/user_change_password.html', context=context)
+class UserPasswordChangeView(PasswordChangeView):
+    form_class = UserChangePasswordForm
+    template_name = 'users/user_password_change.html'
+    success_url = reverse_lazy('users:user_profile')
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data()
+        context_data['title'] = f'Изменить пароль {self.request.user}'
+        return context_data
 
 
-@login_required(login_url='users:user_login')
-def user_logout_view(request):
-    logout(request)
-    return redirect('dogs:index')
+
+
+class UserLogoutView(LogoutView):
+    pass
+
 
 
 @login_required(login_url='users:user_login')
