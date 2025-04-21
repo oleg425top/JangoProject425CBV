@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'dogs/base.html' %}
+{% block content %}
+<h1> Вы вышли из вашего аккаунта</h1>
+<p>Спасибо зи использование нашего сервиса</p>
+<a href="{% url 'users:user_login' %}">Нажмите чтобы снова войти</a>
+{% endblock %}

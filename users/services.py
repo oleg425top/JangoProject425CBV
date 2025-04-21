@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 
 def send_register_email(email):
     send_mail(
-        subject='ПОздравляем с регистрацией на нашем сервисе',
+        subject='Поздравляем с регистрацией на нашем сервисе',
         message='Вы успешно зарегистрировались на сервисе Топ425 ',
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[email, ]
