@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView
 from django.views.generic import CreateView, UpdateView
 from users.models import User
-from users.forms import UserRegisterForm, UserLoginForm, UserUpdateForm, UserChangePasswordForm
+from users.forms import UserRegisterForm, UserLoginForm, UserUpdateForm, UserChangePasswordForm, UserForm
 from users.services import send_register_email, send_new_password
 
 
@@ -20,30 +20,42 @@ class UserRegisterView(CreateView):
     success_url = reverse_lazy('users:user_login')
     template_name = 'users/user_register.html'
     extra_context = {
-
         'title': 'Создать аккаунт'
     }
 
 
 class UserLoginView(LoginView):
     form_class = UserLoginForm
-    template_name = 'users/user-login'
+    template_name = 'users/user_login.html'
     extra_context = {
-        'title': 'Вход в акаунт'
+        'title': 'Вход в аккаунт'
     }
 
+class UserProfileView(UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'users/user_profile_read_only.html'
 
-@login_required(login_url='users:user_login')
-def user_profile_view(request):
-    user_object = request.user
-    if user_object.first_name and user_object.last_name:
-        user_name = user_object.first_name + ' ' + user_object.last_name
-    else:
-        user_name = user_object
-    context = {
-        'title': f'Ваш профиль {user_name}'
-    }
-    return render(request, 'users/user_profile_read_only.html', context=context)
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data()
+        context_data['title'] = f'Ваш профиль {self.get_object()}'
+        return context_data
+
+
+# @login_required(login_url='users:user_login')
+# def user_profile_view(request):
+#     user_object = request.user
+#     if user_object.first_name and user_object.last_name:
+#         user_name = user_object.first_name + ' ' + user_object.last_name
+#     else:
+#         user_name = user_object
+#     context = {
+#         'title': f'Ваш профиль {user_name}'
+#     }
+#     return render(request, 'users/user_profile_read_only.html', context=context)
 
 
 @login_required(login_url='users:user_login')
