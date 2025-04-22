@@ -90,13 +90,4 @@ class DogDeleteView(DeleteView):
         context_data['title'] = f'Удалить собаку {object_}'
         return context_data
 
-# @login_required(login_url='users:user_login')
-# def dog_delete_view(request, pk):
-#     dog_object = get_object_or_404(Dog, pk=pk)
-#     if request.method == 'POST':
-#         dog_object.delete()
-#     context = {
-#         'object': dog_object,
-#         'title': 'Удалить собаку',
-#     }
-#     return render(request, 'dogs/delete.html', context=context)
+
