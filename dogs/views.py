@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404
+from django.template.context_processors import request
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import inlineformset_factory
 
-
-from dogs.models import Breed, Dog
-from dogs.forms import DogForms
+from dogs.models import Breed, Dog, DogParent
+from dogs.forms import DogForms, DogParentForm
 
 
 def index_view(request):
@@ -55,6 +56,7 @@ class DogCreateView(LoginRequiredMixin, CreateView):
         'title': 'Добавить собаку'
     }
     success_url = reverse_lazy('dogs:dogs_list')
+
     def form_valid(self, form):
         self.object = form.save()
         self.object.owner = self.request.user
@@ -72,16 +74,11 @@ class DogDetailView(DetailView):
         context_data['title'] = f'Подробная информация {object_}'
         return context_data
 
+
 class DogUpdateView(LoginRequiredMixin, UpdateView):
     model = Dog
     form_class = DogForms
     template_name = 'dogs/create_update.html'
-
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        object_ = self.get_object()
-        context_data['title'] = f'Изменить собаку {object_}'
-        return context_data
 
     def get_success_url(self):
         return reverse('dogs:dog_detail', args=[self.kwargs.get('pk')])
@@ -91,6 +88,27 @@ class DogUpdateView(LoginRequiredMixin, UpdateView):
         if self.object.owner != self.request.user and not self.request.user.is_staff:
             raise Http404
         return self.object
+
+    def get_context_data(self, **kwargs):
+        DogParentFormset = inlineformset_factory(Dog, DogParent, form=DogParentForm, extra=1)
+        if self.request.method == 'POST':
+            formset = DogParentFormset(self.request.POST, instance=self.object)
+        else:
+            formset = DogParentFormset(instance=self.object)
+        context_data = super().get_context_data(**kwargs)
+        object_ = self.get_object()
+        context_data['title'] = f'Изменить собаку {object_}'
+        context_data['formset'] = formset
+        return context_data
+
+    def form_valid(self, form):
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        self.object = form.save()
+        if form.is_valid():
+            formset.instance = self.object
+            formset.save()
+        return super().form_valid(form)
 
 
 class DogDeleteView(LoginRequiredMixin, DeleteView):
@@ -103,5 +121,3 @@ class DogDeleteView(LoginRequiredMixin, DeleteView):
         object_ = self.get_object()
         context_data['title'] = f'Удалить собаку {object_}'
         return context_data
-
-
