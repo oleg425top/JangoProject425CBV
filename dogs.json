@@ -39,6 +39,7 @@
       "breed": 4,
       "photo": "dogs/images_3hFTTKX.jpeg",
       "birth_date": "2018-08-04T19:00:00Z",
+      "is_active": true,
       "owner": 3
     }
   }

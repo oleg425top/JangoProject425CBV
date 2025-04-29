@@ -21,6 +21,7 @@ class Dog(models.Model):
     breed = models.ForeignKey(Breed, on_delete=models.CASCADE, verbose_name='breed')
     photo = models.ImageField(upload_to='dogs/', **NULLABLE, verbose_name='image')
     birth_date = models.DateTimeField(**NULLABLE, verbose_name='birth date')
+    is_active = models.BooleanField(default=True, verbose_name='Активность')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='хозяин')
 
     def __str__(self):
@@ -30,14 +31,6 @@ class Dog(models.Model):
         verbose_name = 'собака'
         verbose_name_plural = 'собаки'
 
-
-        # abstract = True
-        # app_label = 'dogs'
-        # ordering = [-1]
-        # proxy = True
-        # permissions = []
-        # db_table = 'doggies'
-        # get_latest_by = 'birth_date'
 
 class DogParent(models.Model):
     dogs = models.ForeignKey(Dog, on_delete=models.CASCADE)
