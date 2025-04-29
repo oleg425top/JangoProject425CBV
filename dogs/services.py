@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core.cache import cache
-from django.views.decorators.csrf import requires_csrf_token
 
 from dogs.models import Breed
 
