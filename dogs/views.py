@@ -18,24 +18,48 @@ def index_view(request):
     }
 
     return render(request, 'dogs/index.html', context=context)
-
-
-def breeds_list_view(request):
-    context = {
-        'object_list': Breed.objects.all(),
-        'title': 'Питомник - Все наши породы',
+class BreedListView(ListView):
+    model = Breed
+    extra_context = {
+        'title':'Все наши породы'
     }
-    return render(request, 'dogs/breeds.html', context=context)
+    template_name = 'dogs/breeds.html'
+
+# def breeds_list_view(request):
+#     context = {
+#         'object_list': Breed.objects.all(),
+#         'title': 'Питомник - Все наши породы',
+#     }
+#     return render(request, 'dogs/breeds.html', context=context)
 
 
-def breed_dogs_list_view(request, pk: int):
-    breed_object = Breed.objects.get(pk=pk)
-    context = {
-        'object_list': Dog.objects.filter(breed_id=pk),
-        'title': f'Собаки породы - {breed_object.name}',
-        'breed_pk': breed_object.pk,
-    }
-    return render(request, 'dogs/dogs.html', context=context)
+
+
+class DogBreedListView(LoginRequiredMixin, ListView):
+    model = Dog
+    template_name = 'dogs/dogs.html'
+    extra_context = {'title':'Собаки выбранной породы'}
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(breed_id=self.kwargs.get('pk'))
+        return queryset
+
+    # def get_context_data(self, **kwargs):
+    #     context_data = super().get_context_data(**kwargs)
+    #     object_ = self.get_object()
+    #     context_data['title'] = f'Подробная информация {object_}'
+    #     return context_data
+
+
+
+# def breed_dogs_list_view(request, pk: int):
+#     breed_object = Breed.objects.get(pk=pk)
+#     context = {
+#         'object_list': Dog.objects.filter(breed_id=pk),
+#         'title': f'Собаки породы - {breed_object.name}',
+#         'breed_pk': breed_object.pk,
+#     }
+#     return render(request, 'dogs/dogs.html', context=context)
 
 
 class DogListView(ListView):
