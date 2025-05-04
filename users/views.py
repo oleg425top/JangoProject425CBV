@@ -2,10 +2,11 @@ import random
 import string
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, reverse, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from users.models import User
 from users.forms import UserRegisterForm, UserLoginForm, UserUpdateForm, UserChangePasswordForm, UserForm, \
     StyleFormMixin
@@ -82,6 +83,18 @@ class UserLogoutView(LogoutView):
     extra_context = {
         'title': 'Выход из аккаунта'
     }
+
+class UsersListView(LoginRequiredMixin, ListView):
+    model = User
+    extra_context = {
+        'title':'Питомник: все наши собаки!'
+    }
+    template_name = 'users/users.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_active=True)
+        return queryset
 
 
 
