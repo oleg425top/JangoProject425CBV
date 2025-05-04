@@ -9,7 +9,7 @@ from django.forms import inlineformset_factory
 from django.core.exceptions import PermissionDenied
 
 from dogs.models import Breed, Dog, DogParent
-from dogs.forms import DogForms, DogParentForm
+from dogs.forms import DogForms, DogParentForm, DogAdminForm
 from dogs.services import send_views_email
 from users.models import UserRols
 
@@ -103,7 +103,7 @@ class DogDetailView(DetailView):
             dog_object_increase.views_count()
         if object_.owner:
             object_owner_email = object_.owner.email
-            if dog_object_increase.views % 20 ==0 and dog_object_increase.views !=0:
+            if dog_object_increase.views % 20 == 0 and dog_object_increase.views != 0:
                 send_views_email(dog_object_increase.name, object_owner_email, dog_object_increase.views)
         return context_data
 
@@ -121,6 +121,16 @@ class DogUpdateView(LoginRequiredMixin, UpdateView):
         if self.object.owner != self.request.user and self.request.user != UserRols.ADMIN:
             raise PermissionDenied()
         return self.object
+
+    def get_form_class(self):
+        dog_forms = {
+            UserRols.ADMIN: DogAdminForm,
+            UserRols.MODERATOR: DogForms,
+            UserRols.USER: DogForms,
+        }
+        user_role = self.request.user.role
+        dog_form_class = dog_forms[user_role]
+        return dog_form_class
 
     def get_context_data(self, **kwargs):
         DogParentFormset = inlineformset_factory(Dog, DogParent, form=DogParentForm, extra=1)
@@ -156,6 +166,7 @@ class DogDeleteView(PermissionRequiredMixin, DeleteView):
         object_ = self.get_object()
         context_data['title'] = f'Удалить собаку {object_}'
         return context_data
+
 
 def dog_toggle_activity(request, pk):
     dog_item = get_object_or_404(Dog, pk=pk)
