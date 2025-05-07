@@ -4,7 +4,7 @@ from users.forms import UserRegisterForm
 
 from users.views import UserRegisterView, UserUpdateView, \
     user_generate_new_password_view, UserLoginView, UserProfileView, UserUpdateView, UserPasswordChangeView, \
-    UserLogoutView, UsersListView
+    UserLogoutView, UsersListView, UserDetailView
 
 app_name = UsersConfig.name
 
@@ -18,5 +18,6 @@ urlpatterns = [
     path('change_password/', UserPasswordChangeView.as_view(), name='user_change_password'),
     path('profile/genpassword/', user_generate_new_password_view, name='user_generate_new_password'),
     # просмотр других пользователей
-    path('all_users/', UsersListView.as_view(), name='users_list_view'),
+    path('all_users/', UsersListView.as_view(), name='users_list'),
+    path('profile/<int:pk>/', UserDetailView.as_view(), name='user_detail'),
 ]

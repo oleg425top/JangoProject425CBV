@@ -21,5 +21,5 @@ def send_views_email(dog_object, owner_email, views_count):
         subject=f'{views_count} просмотров {dog_object}',
         message=f'Вааууу !! Уже {views_count} просмотров записи {dog_object}',
         from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[owner_email]
+        recipient_list=[owner_email, ]
     )

@@ -21,7 +21,7 @@ class UserRegisterView(CreateView):
     extra_context = {
         'title': 'Создать аккаунт'
     }
-    
+
     def form_valid(self, form):
         self.object = form.save()
         send_register_email(self.object.email)
@@ -76,18 +76,17 @@ class UserPasswordChangeView(PasswordChangeView):
         return context_data
 
 
-
-
 class UserLogoutView(LogoutView):
     template_name = 'users/user_logout.html'
     extra_context = {
         'title': 'Выход из аккаунта'
     }
 
+
 class UsersListView(LoginRequiredMixin, ListView):
     model = User
     extra_context = {
-        'title':'Питомник: все наши собаки!'
+        'title': 'Питомник: все наши пользователи!'
     }
     template_name = 'users/users.html'
 
@@ -96,6 +95,16 @@ class UsersListView(LoginRequiredMixin, ListView):
         queryset = queryset.filter(is_active=True)
         return queryset
 
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = 'users/user_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data()
+        user_obj = context_data['object']
+        context_data['title'] = f'Профиль пользователя {user_obj}'
+        return context_data
 
 
 @login_required(login_url='users:user_login')
