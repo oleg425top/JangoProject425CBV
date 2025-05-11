@@ -118,7 +118,7 @@ class DogUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.object.owner != self.request.user and self.request.user != UserRols.ADMIN:
+        if self.object.owner != self.request.user and self.request.user.role != UserRols.ADMIN:
             raise PermissionDenied()
         return self.object
 
