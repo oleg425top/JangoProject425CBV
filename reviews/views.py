@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.core.exceptions import PermissionDenied
 
 from reviews.models import Review
-from reviews.utils import slug_generator
 from users.models import UserRols
 from reviews.forms import ReviewAdminForm
 from reviews.utils import slug_generator
@@ -45,8 +44,10 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         if self.request.user.role not in [UserRols.USER, UserRols.ADMIN]:
             return HttpResponseForbidden
         slug_object = form.save()
+        print(slug_object.slug)
         if slug_object.slug == 'temp_slug':
             slug_object.slug = slug_generator()
+            print(slug_object.slug)
         slug_object.author = self.request.user
         slug_object.save()
         return super().form_valid(form)
@@ -54,7 +55,8 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
 class ReviewDetailView(DetailView):
     model = Review
-    template_name = {
+    template_name = 'reviews/detail.html'
+    extra_context = {
         'title': 'Просмотр отзыва'
     }
 
@@ -83,7 +85,7 @@ class ReviewDeleteView(PermissionRequiredMixin, DeleteView):
     permission_required = 'reviews.delete_review'
 
     def get_success_url(self):
-        return reverse('eviews:reviews_list')
+        return reverse('reviews:reviews_list')
 
 
 def review_toggle_activity(request, slug):

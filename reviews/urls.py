@@ -1,9 +1,7 @@
 from django.urls import path
-
-from dogs.urls import app_name, urlpatterns
 from reviews.apps import ReviewsConfig
 
-from reviews.views import ReviewListView, ReviewDeactivatedListView, ReviewDeactivatedListView, ReviewCreateView, \
+from reviews.views import ReviewListView, ReviewDeactivatedListView, ReviewCreateView, \
     ReviewDetailView, ReviewUpdateView, ReviewDeleteView, review_toggle_activity
 
 app_name = ReviewsConfig.name
