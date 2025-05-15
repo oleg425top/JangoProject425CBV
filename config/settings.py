@@ -13,7 +13,7 @@ import os
 
 from pathlib import Path
 
-from django.conf.global_settings import CACHES
+# from django.conf.global_settings import CACHES
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -140,7 +140,7 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = (
-        BASE_DIR / 'media'
+    BASE_DIR / 'media'
 )
 
 # Default primary key field type
@@ -154,12 +154,12 @@ LOGIN_URL = '/users/'
 CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
 if CACHE_ENABLED:
     CACHES = {
-        'default':{
-            "BACKEND":'django.core.cache.backends.redis.RedisCache',
-            "LOCATION":os.getenv('CACHE_LOCATION')
-        }
+        'default':
+            {
+                "BACKEND": 'django.core.cache.backends.redis.RedisCache',
+                "LOCATION": os.getenv('CACHE_LOCATION')
+            }
     }
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.com'
@@ -168,7 +168,6 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('YANDEX_PASSWORD_APP')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-
 
 EMAIL_SERVER = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

@@ -3,8 +3,6 @@ from django.core.management import BaseCommand
 from users.models import User, UserRols
 
 
-
-
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
@@ -33,7 +31,6 @@ class Command(BaseCommand):
         moderator.set_password('querty123456')
         moderator.save()
         print('Moderator Created!!')
-
 
         user = User.objects.create(
             email='user@web.top',

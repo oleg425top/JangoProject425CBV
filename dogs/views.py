@@ -1,8 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.context_processors import request
-from django.http import HttpResponseRedirect, Http404
+# from django.template.context_processors import request
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
@@ -32,16 +30,19 @@ class BreedListView(ListView):
     template_name = 'dogs/breeds.html'
     paginate_by = 3
 
+
 class BreedSearchListView(LoginRequiredMixin, ListView):
     model = Breed
-    template_name ='dogs/breeds.html'
+    template_name = 'dogs/breeds.html'
     extra_context = {
-        'title':'Результат поиска'
+        'title': 'Результат поиска'
     }
+
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list =  Breed.objects.filter(Q(name__icontains = query))
+        object_list = Breed.objects.filter(Q(name__icontains=query))
         return object_list
+
 
 class DogBreedListView(LoginRequiredMixin, ListView):
     model = Dog
@@ -82,17 +83,32 @@ class DogDeactivatedListView(LoginRequiredMixin, ListView):
             queryset = queryset.filter(is_active=False, owner=self.request.user)
         return queryset
 
+
 class DogSearchListView(LoginRequiredMixin, ListView):
     model = Dog
     template_name = 'dogs/dogs.html'
     extra_context = {
-        'title':'Результат поиска'
+        'title': 'Результат поиска'
     }
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list =  Dog.objects.filter(Q(name__icontains = query, is_active=True))
+        object_list = Dog.objects.filter(Q(name__icontains=query, is_active=True))
         return object_list
+
+
+class BreedDogSearchListView(LoginRequiredMixin, ListView):
+    model = Breed
+    template_name = 'dogs/breed_dog_search_results.html'
+    extra_context = {'title': 'Результаты поиска'}
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Dog.objects.filter(Q(name__icontains=query, is_active=True))
+        breed_object_list = Breed.objects.filter(Q(name__icontains=query))
+        object_list = list(breed_object_list) + list(breed_object_list)
+        return object_list
+
 
 # Create Read Update Delete (CRUD)
 
@@ -192,7 +208,7 @@ class DogDeleteView(PermissionRequiredMixin, DeleteView):
         return context_data
 
 
-def dog_toggle_activity(request, pk):
+def dog_toggle_activity(pk):
     dog_item = get_object_or_404(Dog, pk=pk)
     if dog_item.is_active:
         dog_item.is_active = False

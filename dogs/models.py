@@ -33,7 +33,7 @@ class Dog(models.Model):
         verbose_name_plural = 'собаки'
 
     def views_count(self):
-        self.views +=1
+        self.views += 1
         self.save()
 
 

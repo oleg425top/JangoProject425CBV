@@ -1,6 +1,6 @@
 import re
 from django.core.exceptions import ValidationError
-from django.conf import Settings, settings
+from django.conf import settings
 
 
 def validate_password(field):
@@ -8,7 +8,7 @@ def validate_password(field):
     language = settings.LANGUAGE_CODE
     error_messages = [
         {
-            'ru-ru':'Пароль должен содержать только латинские буквы и цифры',
+            'ru-ru': 'Пароль должен содержать только латинские буквы и цифры',
             'en-us': 'Must contain A-Z a-z letters and 0-9 numbers'
         },
         {
