@@ -50,8 +50,8 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         if slug_object.slug == 'temp_slug':
             slug_object.slug = slug_generator()
             print(slug_object.slug)
-        slug_object.author = self.request.user
-        slug_object.save()
+            slug_object.author = self.request.user
+            slug_object.save()
         return super().form_valid(form)
 
 
@@ -83,7 +83,7 @@ class ReviewUpdateView(LoginRequiredMixin, UpdateView):
 
 class ReviewDeleteView(PermissionRequiredMixin, DeleteView):
     model = Review
-    template_name = 'reviews/delete/html'
+    template_name = 'reviews/delete.html'
     permission_required = 'reviews.delete_review'
 
     def get_success_url(self):

@@ -7,6 +7,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
 from dogs.models import Breed, Dog, DogParent
 from dogs.forms import DogForms, DogParentForm, DogAdminForm
@@ -31,6 +32,16 @@ class BreedListView(ListView):
     template_name = 'dogs/breeds.html'
     paginate_by = 3
 
+class BreedSearchListView(LoginRequiredMixin, ListView):
+    model = Breed
+    template_name ='dogs/breeds.html'
+    extra_context = {
+        'title':'Результат поиска'
+    }
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list =  Breed.objects.filter(Q(name__icontains = query))
+        return object_list
 
 class DogBreedListView(LoginRequiredMixin, ListView):
     model = Dog
@@ -71,6 +82,17 @@ class DogDeactivatedListView(LoginRequiredMixin, ListView):
             queryset = queryset.filter(is_active=False, owner=self.request.user)
         return queryset
 
+class DogSearchListView(LoginRequiredMixin, ListView):
+    model = Dog
+    template_name = 'dogs/dogs.html'
+    extra_context = {
+        'title':'Результат поиска'
+    }
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list =  Dog.objects.filter(Q(name__icontains = query, is_active=True))
+        return object_list
 
 # Create Read Update Delete (CRUD)
 
