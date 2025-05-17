@@ -65,7 +65,7 @@ class DogListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(is_active=True)
-        return queryset
+        return queryset.order_by('name')
 
 
 class DogDeactivatedListView(LoginRequiredMixin, ListView):

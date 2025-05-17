@@ -93,7 +93,7 @@ class UsersListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(is_active=True)
-        return queryset
+        return queryset.order_by('first_name')
 
 
 class UserDetailView(DetailView):
