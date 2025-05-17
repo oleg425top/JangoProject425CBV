@@ -208,7 +208,7 @@ class DogDeleteView(PermissionRequiredMixin, DeleteView):
         return context_data
 
 
-def dog_toggle_activity(pk):
+def dog_toggle_activity(request, pk):
     dog_item = get_object_or_404(Dog, pk=pk)
     if dog_item.is_active:
         dog_item.is_active = False
